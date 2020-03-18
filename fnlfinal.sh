@@ -1,5 +1,4 @@
 #!/bin/sh
-date=`date +%d-%m-%Y`
 curl --header "X-Nomad-Token: 4d67205e-b898-00c6-63ce-6ee324da5a74" http://172.21.38.9:4646/v1/allocations > allocations.txt
 tr , '\n' < allocations.txt > 2id.txt   
 grep '"JobID' 2id.txt | cut -d\" -f4 > jobid.txt 
@@ -44,8 +43,8 @@ fi
 rm $jobid.txt $jobid.json
 done <test_unique_together.txt
 
-cat current.xls>>previous.xls	
+cat current.xls>>`date +%m`.xls
 sort -t: -k1,1 previous.xls | uniq -c | cut -d" " -f4 > days.xls
 sort -t: -k1,1 previous.xls | uniq -c | cut -d" " -f5 > app.xls
-paste -d: app.xls days.xls > $date.xls
+paste -d: app.xls days.xls > `date +%d-%m-%Y`.xls
 
