@@ -19,7 +19,7 @@ fi
 rm $id.*
 done <test_unique_nodes.txt
 rm 2id.txt allocations.txt test_together.txt jobid.txt id.txt nodes.* 
-echo "Application:Count:CPU:Memory" > current.txt
+echo "Application:Count:CPU:Memory:Days" > current.txt
 while IFS=: read -r jobid id; do
 curl --header "X-Nomad-Token: 4d67205e-b898-00c6-63ce-6ee324da5a74" http://172.21.38.9:4646/v1/allocation/$id > $jobid.json
 tr , '\n' < $jobid.json > $jobid.txt
