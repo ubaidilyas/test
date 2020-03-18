@@ -45,7 +45,7 @@ rm $jobid.txt $jobid.json
 done <test_unique_together.txt
 
 cat current.xls>>previous.xls	
-sort -t: -k1,1 previous.txt | uniq -c | cut -d" " -f4 > days.xls
-sort -t: -k1,1 previous.txt | uniq -c | cut -d" " -f5 > app.xls
+sort -t: -k1,1 previous.xls | uniq -c | cut -d" " -f4 > days.xls
+sort -t: -k1,1 previous.xls | uniq -c | cut -d" " -f5 > app.xls
 paste -d: app.xls days.xls > $date.xls
 
