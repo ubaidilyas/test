@@ -43,6 +43,5 @@ fi
 fi
 rm $jobid.txt $jobid.json
 done <test_unique_together.txt
-cat $date.xls
-cp $date.xls previous.xls
-cat previous.xls
+cat previous1.xls
+cp $date.xls previous1.xls
