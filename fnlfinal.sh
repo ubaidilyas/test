@@ -1,5 +1,5 @@
 #!/bin/sh
-date=`date +%d-%m-%Y`
+date=`date`
 curl --header "X-Nomad-Token: 4d67205e-b898-00c6-63ce-6ee324da5a74" http://172.21.38.9:4646/v1/allocations > allocations.txt
 tr , '\n' < allocations.txt > 2id.txt   
 grep '"JobID' 2id.txt | cut -d\" -f4 > jobid.txt 
