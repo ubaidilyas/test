@@ -43,7 +43,6 @@ fi
 rm $jobid.txt $jobid.json
 done <test_unique_together.txt
 
- sds test_together.xls
 cat current.txt>>`date +%m`.txt
 sort -t: -k1,1 `date +%m`.txt | uniq -c | cut -d" " -f4 > days.txt
 sort -t: -k1,1 `date +%m`.txt | uniq -c | cut -d" " -f5 > app.txt
