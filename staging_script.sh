@@ -49,4 +49,4 @@ sort -t: -k1,1 `date +%m`.txt | uniq -c | cut -d" " -f5 > app.txt
 paste -d: app.txt days.txt > `date +%d-%m-%Y`.txt
 
 
-rm test* days* current* app*	
+rm test* current*	
