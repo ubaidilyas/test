@@ -59,4 +59,5 @@ done <test_unique_together.txt
 cat test_current.txt>>`date +%m-%Y`.txt
 sort -t: -k1,1 `date +%m-%Y`.txt | uniq -c > `date +%d-%m-%Y`.txt
 
-rm test* jobid.txt 
+#Removing Unrequired files
+rm test*
