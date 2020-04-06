@@ -25,7 +25,7 @@ done <test_unique_nodes.txt
 rm 2id.txt allocations.txt test_together.txt jobid.txt id.txt nodes.* 
 
 #Creating initial file for daily report
-echo "Days/Application:Count:CPU:Memory:Days:Size" > current.txt
+echo "Days/Application:Count:CPU:Memory:Size" > `date +%m-%Y`.txt
 
 #Calculating cpu,memory,count and size
 while IFS=: read -r jobid id; do
@@ -44,22 +44,21 @@ tr , '\n' < $jobid.json > $jobid.txt
 #Assigning count according to type of application	
 string=`grep '"Type":"system"' $jobid.txt`
 if [ -z $string ]; then
-	echo "$jobid:$count:$cpu:$size" >> current.txt
+	echo "$jobid:$count:$cpu:$size" >> `date +%m-%Y`.txt
 else
 stringvar1=`grep "Constraints" $jobid.txt | grep "meta.dc"`
 if [ -z $stringvar1 ]; then
-echo "$jobid:$((ccount*count)):$cpu:$size" >> current.txt
+echo "$jobid:$((ccount*count)):$cpu:$size" >> `date +%m-%Y`.txt
 else
-echo "$jobid:$((azwe*count)):$cpu:$size" >> current.txt
+echo "$jobid:$((azwe*count)):$cpu:$size" >> `date +%m-%Y`.txt
 fi
 fi
 
 rm $jobid.txt $jobid.json
 done <test_unique_together.txt
 
-#Creating Final report
-cat current.txt>>`date +%m-%Y`.txt
+#Creating Daily Report report
 sort -t: -k1,1 `date +%m-%Y`.txt | uniq -c > `date +%d-%m-%Y`.txt
 
 
-rm test* days* current* app*	
+rm test*
