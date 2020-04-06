@@ -25,7 +25,7 @@ done <test_unique_nodes.txt
 rm 2id.txt allocations.txt test_together.txt jobid.txt id.txt nodes.* 
 
 #Creating initial file for daily report
-echo "Application:Count:CPU:Memory:Days:Size" > current.txt
+echo "Days/Application:Count:CPU:Memory:Days:Size" > current.txt
 
 #Calculating cpu,memory,count and size
 while IFS=: read -r jobid id; do
@@ -59,9 +59,7 @@ done <test_unique_together.txt
 
 #Creating Final report
 cat current.txt>>`date +%m-%Y`.txt
-sort -t: -k1,1 `date +%m-%Y`.txt | uniq -c | cut -d" " -f4 > days.txt
-sort -t: -k1,1 `date +%m-%Y`.txt | uniq -c | cut -d" " -f5 > app.txt
-paste -d: app.txt days.txt > `date +%d-%m-%Y`.txt
+sort -t: -k1,1 `date +%m-%Y`.txt | uniq -c > `date +%d-%m-%Y`.txt
 
 
 rm test* days* current* app*	
