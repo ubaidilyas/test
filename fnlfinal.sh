@@ -42,7 +42,7 @@ tr , '\n' < $jobid.json > $jobid.txt
 #Assigning count according to type of application	
 string=`grep '"Type":"system"' $jobid.txt`
 if [ -z $string ]; then
-	echo "$jobid:$count:$cpu:$size" >> 
+echo "$jobid:$count:$cpu:$size" >> test_current.txt
 else
 stringvar1=`grep "Constraints" $jobid.txt | grep "meta.dc"`
 if [ -z $stringvar1 ]; then
@@ -51,11 +51,12 @@ else
 echo "$jobid:$((azwe*count)):$cpu:$size" >> test_current.txt
 fi
 fi
+
 rm $jobid.txt $jobid.json
 done <test_unique_together.txt
 
 #Creating Daily Report report
-cat test_current.txt>>`date +%m`.txt
+cat test_current.txt>>`date +%m-%Y`.txt
 sort -t: -k1,1 `date +%m-%Y`.txt | uniq -c > `date +%d-%m-%Y`.txt
 
 rm test* jobid.txt 
