@@ -58,10 +58,10 @@ rm $jobid.txt $jobid.json
 done <test_unique_together.txt
 
 #Creating Final report
-cat current.txt>>`date +%m`.txt
-sort -t: -k1,1 `date +%m`.txt | uniq -c | cut -d" " -f4 > days.txt
-sort -t: -k1,1 `date +%m`.txt | uniq -c | cut -d" " -f5 > app.txt
-paste -d: app.txt days.txt > `date +%m-%Y`.txt
+cat current.txt>>`date +%m-%Y`.txt
+sort -t: -k1,1 `date +%m-%Y`.txt | uniq -c | cut -d" " -f4 > days.txt
+sort -t: -k1,1 `date +%m-%Y`.txt | uniq -c | cut -d" " -f5 > app.txt
+paste -d: app.txt days.txt > `date +%d-%m-%Y`.txt
 
 
 rm test* days* current* app*	
