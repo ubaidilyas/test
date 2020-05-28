@@ -74,24 +74,3 @@ rm test*
 az storage file upload --source /mnt/resource/workspace/Testing-admin-jobs/cost-reports/$month.txt  -s cost-reports/$month --account-key $secret --account-name mondiaci
 az storage file upload --source /mnt/resource/workspace/Testing-admin-jobs/cost-reports/$day.txt   -s cost-reports/$month --account-key $secret --account-name mondiaci
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
