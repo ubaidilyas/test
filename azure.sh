@@ -9,12 +9,5 @@ echo $string
 if [ -z $string ]; then
 		echo " file does not exists"
 	else 
-		echo "file  exist"
-	fi
-string=`az storage file exists -s cost-reports -p test/test_ubaid1.txt --account-key $secret --account-name mondiaci | grep -o true`
-echo $string
-if [ -z $string ]; then
-		echo " file does not exists"
-	else 
-		echo "file  exist"
+		./ubaid.sh
 	fi
