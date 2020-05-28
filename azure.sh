@@ -6,14 +6,14 @@ az storage file upload --source /mnt/resource/workspace/Testing-admin-jobs/cost-
 az storage file download -s cost-reports -p test/test_ubaid.txt --dest /mnt/resource/workspace/Testing-admin-jobs/cost-reports/download --account-key $secret --account-name mondiaci
 string=`az storage file exists -s cost-reports -p test/test_ubaid.txt --account-key $secret --account-name mondiaci | grep -o true`
 echo $string
-if [ true=$string ]; then
+if [ -z $string ]; then
 		echo " file exists"
 	else 
 		echo "file does not exist"
 	fi
 string=`az storage file exists -s cost-reports -p test/test_ubaid1.txt --account-key $secret --account-name mondiaci | grep -o true`
 echo $string
-if [ true=$string ]; then
+if [ -z $string ]; then
 		echo " file exists"
 	else 
 		echo "file does not exist"
