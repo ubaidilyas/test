@@ -1,11 +1,14 @@
 #!/bin/sh
 
+
+
+
 # Creating list of JobID and ID of Apps
 curl --header "X-Nomad-Token: 4d67205e-b898-00c6-63ce-6ee324da5a74" http://172.21.38.9:4646/v1/allocations > test_allocations.txt
 tr , '\n' < test_allocations.txt > test_2id.txt   
-grep '"JobID' test_2id.txt | cut -d\" -f4 > jobid.txt 
-grep '"ID' test_2id.txt  | cut -d\" -f4 > id.txt
-paste -d: jobid.txt id.txt > test_together.txt
+grep '"JobID' test_2id.txt | cut -d\" -f4 > test_jobid.txt 
+grep '"ID' test_2id.txt  | cut -d\" -f4 > test_id.txt
+paste -d: test_jobid.txt test_id.txt > test_together.txt
 sort -u -t: -k1,1 test_together.txt > test_unique_together.txt
 
 #Creating list of Clients (for calculating count for type system)
@@ -60,8 +63,35 @@ rm $jobid.txt $jobid.json
 done <test_unique_together.txt
 
 #Creating Daily Report report
-cat test_current.txt>>`date +%m-%Y`.txt
-sort -t: -k1,1 `date +%m-%Y`.txt | uniq -c > `date +%d-%m-%Y`.txt
+month=`date +%m-%Y`
+day=`date +%d-%m-%Y`
+cat test_current.txt>>$month.txt
+cat test_current.txt>$day.txt 
 
 #Removing Unrequired files
 rm test*
+
+az storage file upload --source /mnt/resource/workspace/Testing-admin-jobs/cost-reports/$month.txt  -s cost-reports/$month --account-key $secret --account-name mondiaci
+az storage file upload --source /mnt/resource/workspace/Testing-admin-jobs/cost-reports/$day.txt   -s cost-reports/$month --account-key $secret --account-name mondiaci
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
