@@ -7,14 +7,14 @@ az storage file download -s cost-reports -p test/test_ubaid.txt --dest /mnt/reso
 string=`az storage file exists -s cost-reports -p test/test_ubaid.txt --account-key $secret --account-name mondiaci | grep -o true`
 echo $string
 if [ -z $string ]; then
-		echo " file exists"
+		echo " file does not exists"
 	else 
-		echo "file does not exist"
+		echo "file  exist"
 	fi
 string=`az storage file exists -s cost-reports -p test/test_ubaid1.txt --account-key $secret --account-name mondiaci | grep -o true`
 echo $string
 if [ -z $string ]; then
-		echo " file exists"
+		echo " file does not exists"
 	else 
-		echo "file does not exist"
+		echo "file  exist"
 	fi
