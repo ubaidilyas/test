@@ -20,7 +20,7 @@ domain=${domain/_/}
 
 value=_${domain}
 
-jq -n --arg kcert letsencrypt/${value}/cert --arg kkey letsencrypt/${value}/key --arg vcert $(base64 -i /Users/UBIL1/Desktop/Work/ssl/.lego/certificates/${value}.crt) --arg vkey $(base64 -i /Users/UBIL1/Desktop/Work/ssl/.lego/certificates/${value}.key) '[{"KV": {"Verb":"set","Key":$kcert,"Value":$vcert}},{"KV": {"Verb":"set","Key": $kkey,"Value": $vkey}}]' >>${domain}.json
+jq -n --arg kcert letsencrypt/${value}/cert --arg kkey letsencrypt/${value}/key --arg vcert $(base64 -i $(pwd)/.lego/certificates/${value}.crt) --arg vkey $(base64 -i $(pwd)/.lego/certificates/${value}.key) '[{"KV": {"Verb":"set","Key":$kcert,"Value":$vcert}},{"KV": {"Verb":"set","Key": $kkey,"Value": $vkey}}]' >>${domain}.json
 
 
 	fi
