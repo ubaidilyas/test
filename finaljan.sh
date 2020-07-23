@@ -31,4 +31,3 @@ done <.enddate.txt
 jq -s 'add ' .*.json >.putmonday.json
 
 curl --request PUT --data @.putmonday.json http://127.0.0.1:8500/v1/txn
-rm .*.*
