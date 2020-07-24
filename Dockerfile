@@ -1,5 +1,9 @@
 #!/bin/sh
 FROM docker.io/centos:8
+ARG stage
+ARG live
+ARG stoken
+ARG ltoken
 RUN yum install -y epel-release jq which wget unzip openssl git && yum clean all -y
 RUN wget https://github.com/go-acme/lego/releases/download/v3.8.0/lego_v3.8.0_linux_amd64.tar.gz
 RUN tar xf lego_v3.8.0_linux_amd64.tar.gz
@@ -12,7 +16,8 @@ RUN git clone -n git://github.com/ubaidilyas/test.git --depth 1
 WORKDIR /usr/local/test
 RUN git checkout HEAD centos.sh
 RUN chmod +x centos.sh
-RUN ./centos.sh
+RUN ./centos.sh stage stoken
+RUN ./centos.sh live ltoken
 
 
 
