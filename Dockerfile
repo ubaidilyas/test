@@ -16,8 +16,8 @@ RUN git clone -n git://github.com/ubaidilyas/test.git --depth 1
 WORKDIR /usr/local/test
 RUN git checkout HEAD centos.sh
 RUN chmod +x centos.sh
-RUN ./centos.sh stage stoken
-RUN ./centos.sh live ltoken
+RUN ./centos.sh $stage $stoken
+RUN ./centos.sh $live $ltoken
 
 
 
