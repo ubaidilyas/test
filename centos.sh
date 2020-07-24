@@ -30,5 +30,4 @@ done <enddate.txt
 #add condition of no files
 jq -s 'add ' .*.json >putmonday.json
 
-cat putmonday.json
-#curl --request PUT --data @putmonday.json http://127.0.0.1:8500/v1/txn
+curl --request PUT --data @putmonday.json http://127.0.0.1:8500/v1/txn
