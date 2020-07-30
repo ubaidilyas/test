@@ -31,4 +31,5 @@ jq -s 'add ' _*.json >putmonday.json
 cat putmonday.json
 #curl --request PUT --data @putmonday.json http://127.0.0.1:8500/v1/txn
 fi
+mv _*.json $(pwd)/.lego/
 rm *.txt
