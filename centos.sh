@@ -16,7 +16,7 @@ domain=${domain/_/}
 
 export CF_DNS_API_TOKEN="-NiavYvHFfUfa6thNZwPlI5igPdZs3yZTybSjvfX"
 export CF_ZONE_API_TOKEN="XRG8nAOr7nW38LNQiUFO20HIGqhhfQo_tHIqdpmO"
-lego --server=https://acme-staging-v02.api.letsencrypt.org/directory -d "*${domain}" --email sysops@mondia.com --key-type rsa4096 --accept-tos --dns cloudflare --dns-timeout 90 --dns.resolvers 8.8.8.8 run
+lego -d "*${domain}" --email sysops@mondia.com --key-type rsa4096 --accept-tos --dns cloudflare --dns-timeout 90 --dns.resolvers 8.8.8.8 run
 
 value=_${domain}
 
