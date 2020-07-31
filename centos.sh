@@ -27,9 +27,9 @@ jq -n --arg kcert letsencrypt/${value}/cert --arg kkey letsencrypt/${value}/key 
 done <enddate.txt
 
 if [ -n $(ls _*.json|wc -l) ]; then
-jq -s 'add ' _*.json >putmonday.json
-cat putmonday.json
-#curl --request PUT --data @putmonday.json http://127.0.0.1:8500/v1/txn
+jq -s 'add ' _*.json >put.json
+cat put.json
+curl -H "X-Consul-Token: ${2}" --request PUT --data @put.json ${1}/v1/txn
 fi
 mv _*.json $(pwd)/.lego/
 rm *.txt
