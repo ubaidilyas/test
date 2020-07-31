@@ -17,7 +17,7 @@ WORKDIR /usr/local/test
 RUN git checkout HEAD centos.sh
 RUN chmod +x centos.sh
 RUN ./centos.sh $stage $stoken
-RUN ./centos.sh $live $ltoken
+
 
 
 
