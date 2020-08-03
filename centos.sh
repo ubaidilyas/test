@@ -31,6 +31,4 @@ cat put.json
 #curl -H "X-Consul-Token: ${2}" --request PUT --data @put.json ${1}/v1/txn
 fi
 mv _*.json $(pwd)/.lego/
-pwd
-ls $(pwd)/.lego
 rm *.txt
