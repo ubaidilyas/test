@@ -14,7 +14,7 @@ RUN mv consul /usr/local/bin/consul
 WORKDIR /usr/local
 COPY ./centos.sh .
 RUN chmod +x ./centos.sh
-ENTRYPOINT ["bin/sh", "/centos.sh"]
+ENTRYPOINT ["/bin/sh", "centos.sh"]
 CMD ["link", "token"]
 
 
