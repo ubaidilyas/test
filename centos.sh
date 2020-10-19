@@ -9,7 +9,7 @@ fi
 done <list.txt
 while IFS== read -r domain notafter date; do
 if [ $(((`date -d "${date}" +%s` - `date +%s`) / 86400)) -lt 30 ]; then
-lego --server=https://acme-staging-v02.api.letsencrypt.org/directory -d "$(echo "${domain}" | sed -e 's/_/*/')" --email sysops@mondia.com --key-type rsa4096 --accept-tos --dns cloudflare --dns-timeout 90 --dns.resolvers 8.8.8.8 run
+lego -d "$(echo "${domain}" | sed -e 's/_/*/')" --email sysops@mondia.com --key-type rsa4096 --accept-tos --dns cloudflare --dns-timeout 90 --dns.resolvers 8.8.8.8 run
 jq -n --arg kcert letsencrypt/${domain}/cert --arg kkey letsencrypt/${domain}/key --arg vcert $(base64 -i $(pwd)/.lego/certificates/${domain}.crt| tr -d \\n) --arg vkey $(base64 -i $(pwd)/.lego/certificates/${domain}.key| tr -d \\n) '[{"KV": {"Verb":"set","Key":$kcert,"Value":$vcert}},{"KV": {"Verb":"set","Key": $kkey,"Value": $vkey}}]' > ${domain}.json
       fi
 done <enddate.txt
