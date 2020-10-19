@@ -16,7 +16,7 @@ done <enddate.txt
 if [ -n $(ls *.json|wc -l) ]; then
 jq -s 'add ' *.json >put.json
 cat put.json
-#curl -H "X-Consul-Token: ${2}" --request PUT --data @put.json ${1}/v1/txn
+curl -H "X-Consul-Token: ${2}" --request PUT --data @put.json ${1}/v1/txn
 fi
 rm put.json
 mv *.json $(pwd)/.lego/
