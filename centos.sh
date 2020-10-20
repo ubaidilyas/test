@@ -13,11 +13,11 @@ lego -d "$(echo "${domain}" | sed -e 's/_/*/')" --email sysops@mondia.com --key-
 jq -n --arg kcert letsencrypt/${domain}/cert --arg kkey letsencrypt/${domain}/key --arg vcert $(base64 -i $(pwd)/.lego/certificates/${domain}.crt| tr -d \\n) --arg vkey $(base64 -i $(pwd)/.lego/certificates/${domain}.key| tr -d \\n) '[{"KV": {"Verb":"set","Key":$kcert,"Value":$vcert}},{"KV": {"Verb":"set","Key": $kkey,"Value": $vkey}}]' > ${domain}.json
       fi
 done <enddate.txt
-if [ -n $(ls *.json|wc -l) ]; then
+if ls *.json 2>/dev/null; then
 jq -s 'add ' *.json >put.json
 cat put.json
 curl -H "X-Consul-Token: ${2}" --request PUT --data @put.json ${1}/v1/txn
-fi
 rm put.json
 mv *.json $(pwd)/.lego/
+fi
 rm *.txt
