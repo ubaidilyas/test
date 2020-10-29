@@ -16,5 +16,4 @@ jq -n --arg kcert letsencrypt/${domain}/cert --arg kkey letsencrypt/${domain}/ke
 done <enddate.txt
 if ls *.json 2>/dev/null; then
 jq -s 'add ' *.json >put.json
-#curl -H "X-Consul-Token: ${2}" --request PUT --data @put.json ${1}/v1/txn
 fi
