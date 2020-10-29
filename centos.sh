@@ -20,4 +20,8 @@ curl -H "X-Consul-Token: ${2}" --request PUT --data @put.json ${1}/v1/txn
 rm put.json
 mv *.json $(pwd)/.lego/
 fi
-rm *.txt
+if [ -s error.txt ]; then
+  rm enddate.txt
+else
+	rm *.txt
+fi
