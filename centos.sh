@@ -2,7 +2,7 @@
 
 export CF_DNS_API_TOKEN="${3}"
 export CF_ZONE_API_TOKEN="${4}"
-touch error.txt put.json
+touch error.txt
 consul kv get -token=${2} -http-addr=${1} -keys -separator="" letsencrypt > list.txt
 while IFS=/ read -r key value type; do
 if [ "$type" = 'cert' ]; then
