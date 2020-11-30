@@ -50,16 +50,16 @@ tr , '\n' < $jobid.json > $jobid.txt
 #Assigning count according to type of application	
 string=`grep '"Type":"system"' $jobid.txt`
 if [ -z $string ]; then
-echo "$jobid:$count:$cpu:$size" >> test_current.txt
+echo "$jobid.$1:$count:$cpu:$size" >> test_current.txt
 else
 stringvar1=`grep '"RTarget":"GT-DC3"' $jobid.txt`
 if [ -n "$stringvar1" ]; then
-echo "$jobid:$(((ccount-azwe)*count)):$cpu:$size" >> test_current.txt
+echo "$jobid.$1:$(((ccount-azwe)*count)):$cpu:$size" >> test_current.txt
 else
-echo "$jobid:$((azwe*count)):$cpu:$size" >> test_current.txt
+echo "$jobid.$1:$((azwe*count)):$cpu:$size" >> test_current.txt
 fi
 fi
-rm $jobid.txt $jobid.json
+rm $jobid$1.txt $jobid$1.json
 done <test_unique_together.txt
 
 #Creating Daily Report report
