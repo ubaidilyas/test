@@ -59,7 +59,7 @@ else
 echo "$jobid.$1:$((azwe*count)):$cpu:$size" >> test_current.txt
 fi
 fi
-rm $jobid$1.txt $jobid$1.json
+rm $jobid.$1.txt $jobid.$1.json
 done <test_unique_together.txt
 
 #Creating Daily Report report
