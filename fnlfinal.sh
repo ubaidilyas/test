@@ -46,6 +46,10 @@ tr , '\n' < $jobid.json > $jobid.txt
 	else 
 		size="$memory:L"
 	fi
+#Extracting Bussiness and Technical Support
+curl --header "X-Consul-Token: ${4}" ${5}/v1/catalog/service/$jobid > $jobid_s.json
+bsup=`cat $jobid_s.json | sed 's/\",\"/\n/g' | sed 's/:\[\"/\n/g' | grep -m 1 "business_support="`
+tsup=`cat $jobid_s.json | sed 's/\",\"/\n/g' | sed 's/:\[\"/\n/g' | grep -m 1 "technical_support="`
 
 #Assigning count according to type of application	
 string=`grep '"Type":"system"' $jobid.txt`
@@ -72,5 +76,5 @@ cat test_current.txt>$day.txt
 rm test*
 
 #Adding to azure
-az storage file upload --source /mnt/resource/workspace/Testing-admin-jobs/cost-reports/$month.txt  -s cost-reports/$1/$month --account-key $secret --account-name mondiaci
-az storage file upload --source /mnt/resource/workspace/Testing-admin-jobs/cost-reports/$day.txt   -s cost-reports/$1/$month --account-key $secret --account-name mondiaci
+#az storage file upload --source /mnt/resource/workspace/Testing-admin-jobs/cost-reports/$month.txt  -s cost-reports/$1/$month --account-key $secret --account-name mondiaci
+#az storage file upload --source /mnt/resource/workspace/Testing-admin-jobs/cost-reports/$day.txt   -s cost-reports/$1/$month --account-key $secret --account-name mondiaci
