@@ -54,13 +54,13 @@ tsup=`cat $jobid_s.json | sed 's/\",\"/\n/g' | sed 's/:\[\"/\n/g' | grep -m 1 "t
 #Assigning count according to type of application	
 string=`grep '"Type":"system"' $jobid.txt`
 if [ -z $string ]; then
-echo "$jobid.$1:$count:$cpu:$size" >> test_current.txt
+echo "$jobid.$1:$count:$cpu:$size:$bsup:$tsup" >> test_current.txt
 else
 stringvar1=`grep '"RTarget":"GT-DC3"' $jobid.txt`
 if [ -n "$stringvar1" ]; then
-echo "$jobid.$1:$(((ccount-azwe)*count)):$cpu:$size" >> test_current.txt
+echo "$jobid.$1:$(((ccount-azwe)*count)):$cpu:$size:$bsup:$tsup" >> test_current.txt
 else
-echo "$jobid.$1:$((azwe*count)):$cpu:$size" >> test_current.txt
+echo "$jobid.$1:$((azwe*count)):$cpu:$size:$bsup:$tsup" >> test_current.txt
 fi
 fi
 rm $jobid.txt $jobid.json
