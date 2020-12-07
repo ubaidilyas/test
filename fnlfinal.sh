@@ -76,5 +76,5 @@ cat test_current.txt>$day.txt
 rm test*
 
 #Adding to azure
-#az storage file upload --source /mnt/resource/workspace/Testing-admin-jobs/cost-reports/$month.txt  -s cost-reports/$1/$month --account-key $secret --account-name mondiaci
-#az storage file upload --source /mnt/resource/workspace/Testing-admin-jobs/cost-reports/$day.txt   -s cost-reports/$1/$month --account-key $secret --account-name mondiaci
+az storage file upload --source /mnt/resource/workspace/Testing-admin-jobs/cost-reports/$month.txt  -s cost-reports/$1/$month --account-key $secret --account-name mondiaci
+az storage file upload --source /mnt/resource/workspace/Testing-admin-jobs/cost-reports/$day.txt   -s cost-reports/$1/$month --account-key $secret --account-name mondiaci
