@@ -27,7 +27,7 @@ rm $id.*
 done <test_unique_nodes.txt
 
 #Creating initial file for daily report
-echo "Days/Application:Count:CPU:Memory:Size" > test_current.txt
+echo "Days/Application:Count:CPU:Memory:Size:Business_Support:Techincal_Support" > test_current.txt
 
 #Calculating cpu,memory,count and size
 while IFS=: read -r jobid id; do
