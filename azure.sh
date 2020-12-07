@@ -7,8 +7,8 @@ string=`az storage directory exists -s cost-reports -n ${1}/$directory --account
 echo $string
 if [ -z $string ]; then
 		az storage directory create -s cost-reports -n ${1}/$directory --account-key $secret --account-name mondiaci
-		./fnlfinal.sh ${1} ${2} ${3}
+		./fnlfinal.sh ${1} ${2} ${3} ${4} ${5}
 	else 
 		az storage file download -s cost-reports -p ${1}/$directory/$directory.txt --dest /mnt/resource/workspace/Testing-admin-jobs/cost-reports --account-key $secret --account-name mondiaci
-		./fnlfinal.sh ${1} ${2} ${3}
+		./fnlfinal.sh ${1} ${2} ${3} ${4} ${5}
 	fi
