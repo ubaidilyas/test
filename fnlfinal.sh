@@ -1,44 +1,34 @@
 #!/bin/sh
 
-
-
-
 # Creating list of JobID and ID of Apps
-curl --header "X-Nomad-Token: ${2}" ${3}/v1/allocations > test_allocations.txt
-tr , '\n' < test_allocations.txt > test_2id.txt   
-grep '"JobID' test_2id.txt | cut -d\" -f4 > test_jobid.txt 
-grep '"ID' test_2id.txt  | cut -d\" -f4 > test_id.txt
-paste -d: test_jobid.txt test_id.txt > test_together.txt
-sort -u -t: -k1,1 test_together.txt > test_unique_together.txt
+curl --header "X-Nomad-Token: ${2}" ${3}/v1/allocations | sed 's/,/\n/g' > allocations.txt   
+grep '"JobID' allocations.txt | cut -d\" -f4 > jobid.txt 
+grep '"ID' allocations.txt  | cut -d\" -f4 > id.txt
+paste -d: jobid.txt  id.txt | sort -u -t: -k1,1 > unique_id_job.txt
 
 #Creating list of Clients (for calculating count for type system)
-curl --header "X-Nomad-Token: ${2}" ${3}/v1/nodes >test_nodes.json
-tr , '\n' <test_nodes.json > test_nodes.txt
-ccount=`grep '"ID"' test_nodes.txt | wc -l`
+curl --header "X-Nomad-Token: ${2}" ${3}/v1/nodes | sed 's/,/\n/g' >nodes.txt
+ccount=`grep '"ID"' nodes.txt | wc -l`
 azwe=$ccount
-grep '"ID"' test_nodes.txt | cut -d\" -f4 > test_unique_nodes.txt
+grep '"ID"' nodes.txt | cut -d\" -f4 > id_nodes.txt
 while IFS=: read -r id; do
-curl --header "X-Nomad-Token: ${2}" ${3}/v1/node/$id > $id.json
-tr , '\n' <$id.json > $id.txt
+curl --header "X-Nomad-Token: ${2}" ${3}/v1/node/$id  | sed 's/,/\n/g' >> $id.txt
 if [ `grep '"dc":"GT-DC3"' $id.txt` ]; then
 azwe=$((azwe-1))
 fi
 rm $id.*
-done <test_unique_nodes.txt
+done <id_nodes.txt
 
 #Creating initial file for daily report
-echo "Days/Application:Count:CPU:Memory:Size:Business_Support:Techincal_Support" > test_current.txt
+echo "Days/Application:Count:CPU:Memory:Size:Business_Support:Techincal_Support" > current.txt
 
-#Calculating cpu,memory,count and size
+#Calculating cpu,memory,count
 while IFS=: read -r jobid id; do
 curl --header "X-Nomad-Token: ${2}" ${3}/v1/allocation/$id > $jobid.json
-tr , '\n' < $jobid.json > $jobid.txt
-	memory=`grep '"MemoryMB' $jobid.txt | grep -o '"MemoryMB.*'| cut -d':' -f2 | tr '\n' ' ' | perl -MList::Util=max -lane 'print max(@F)'`
-	count=`grep 'Count' $jobid.txt |tr ':' ' ' |perl -MList::Util=max -lane 'print max(@F)'`
-	if (( `echo "$count" | wc -l` > 1 ));then
-	count=`echo "$count" | wc -l | perl -MList::Util=max -lane 'print max(@F)'`
-	fi
-	cpu=`grep '"CPU' $jobid.txt | grep -o '"CPU.*'| cut -d':' -f2 | tr '\n' ' ' | perl -MList::Util=max -lane 'print max(@F)'`
+	memory=`cat $jobid.json | sed 's/,/\n/g' |  grep -o '"MemoryMB.*' | grep -o '[0-9]*[0-9]' | sort -nr | head -1`
+	count=`cat $jobid.json | sed 's/,/\n/g' | grep -o 'Count.*' |grep -o '[0-9]*[0-9]' | sort -nr | head -1`
+	cpu=`cat $jobid.json | sed 's/,/\n/g' | grep -o 'CPU.*' |grep -o '[0-9]*[0-9]' | sort -nr | head -1`
+#Calculating size
 	if [ $memory -lt 256 ]; then
 		size="$memory:S"
 	elif [ $memory -lt 1024 ] && [ $memory -gt 256 ]; then
@@ -52,28 +42,25 @@ bsup=`cat $jobid_s.json | sed 's/\",\"/\n/g' | sed 's/:\[\"/\n/g' | grep -m 1 "b
 tsup=`cat $jobid_s.json | sed 's/\",\"/\n/g' | sed 's/:\[\"/\n/g' | grep -m 1 "technical_support="`
 
 #Assigning count according to type of application	
-string=`grep '"Type":"system"' $jobid.txt`
+string=`grep '"Type":"system"' $jobid.json`
 if [ -z $string ]; then
-echo "$jobid.$1:$count:$cpu:$size:$bsup:$tsup" >> test_current.txt
+echo "$jobid.$1:$count:$cpu:$size:$bsup:$tsup" >> current.txt
 else
-stringvar1=`grep '"RTarget":"GT-DC3"' $jobid.txt`
+stringvar1=`grep '"RTarget":"GT-DC3"' $jobid.json`
 if [ -n "$stringvar1" ]; then
-echo "$jobid.$1:$(((ccount-azwe)*count)):$cpu:$size:$bsup:$tsup" >> test_current.txt
+echo "$jobid.$1:$(((ccount-azwe)*count)):$cpu:$size:$bsup:$tsup" >> current.txt
 else
-echo "$jobid.$1:$((azwe*count)):$cpu:$size:$bsup:$tsup" >> test_current.txt
+echo "$jobid.$1:$((azwe*count)):$cpu:$size:$bsup:$tsup" >> current.txt
 fi
 fi
-rm $jobid.txt $jobid.json
-done <test_unique_together.txt
+rm $jobid.json
+done <unique_id_job.txt
 
 #Creating Daily Report report
 month=`date +%m-%Y`
 day=`date +%d-%m-%Y`
-cat test_current.txt>>$month.txt
-cat test_current.txt>$day.txt 
-
-#Removing Unrequired files
-rm test*
+cat current.txt>>$month.txt
+cat current.txt>$day.txt 
 
 #Adding to azure
 az storage file upload --source /mnt/resource/workspace/Testing-admin-jobs/cost-reports/$month.txt  -s cost-reports/$1/$month --account-key $secret --account-name mondiaci
